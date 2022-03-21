@@ -1,9 +1,9 @@
 package main
 
 import (
-	"net/http"
 	"time"
 
+	"github.com/Sorarinu/golang-gin-sample/app/v1/controllers"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
@@ -75,11 +75,11 @@ func main() {
 
 	// zap.L().Info("Info Message")
 
-	router.GET("/", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"message": "Hello World!!",
-		})
-	})
+	v1 := router.Group("/v1")
+	{
+		ping := controllers.NewPingController()
+		v1.GET("ping", ping.Pong)
+	}
 
 	router.Run(":8080")
 }
